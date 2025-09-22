@@ -1,12 +1,13 @@
 class Product{
-    constructor(name, price){
+    constructor(name, price,quantity){
         Object.defineProperty(this, 'name',{
-            Value : name,
+            value : name,
             writable: false,
             configurable: false,
             enumarable: true
         });
         this.price = price;
+        this.quantity = quantity;
     }
     
     

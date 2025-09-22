@@ -1,19 +1,31 @@
 class ShoppingCart {
-    constructor(products){
-        this.products = [];
+    constructor(productList){
+        this.productList = new Map();
     }
     
     
     addProduct(product){
-        this.products.push(product);
+        console.log("Adding product:::",product);
+        this.productList.set(product.name,product);
+
     }
     
     removeProduct(productName){
-        this.products = this.products.filter( p => p.name !== productName);
+        this.productList.delete(productName);
     }
     
     calculateTotal(){
-        return this.products.reduce((total, p) => total + p.price,0)
+        let total =0;
+        for(let product of this.productList.values()){
+            total += product.price * product.quantity;
+        }
+        return total;
+    }
+
+    displayCartItems(){
+        for(const [name, product] of this.productList){
+            console.log(`Product:${name}, Price:${product.price}`);
+        }
     }
 }
 

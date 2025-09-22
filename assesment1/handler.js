@@ -2,6 +2,7 @@ import readline from "readline";
 import ShoppingCart from "./shoppingCart.js";
 import Product from "./products.js";
 import menu from "./menu.js";
+import {validateString,validateNum} from "./priceValidation.js"
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -15,20 +16,54 @@ function userInput(input) {
     case "1":
       rl.question("Enter product name :", (name) => {
         rl.question("Enter product price :", (price) => {
-          cart.addProduct(new Product(name, price));
-          console.log(`product ${name} added at ${price}`);
-          callUserChoice();
+          rl.question(`Quantity of ${name}`, (quantity) =>{
+            if(validateNum(price) && validateString(name) && validateNum(quantity)){
+              cart.addProduct(new Product(name, price,quantity));
+              console.log(`${quantity} ${name} added at $${price*quantity}`);
+            }else{
+              console.log('Invalid Inputs');  
+            }
+            callUserChoice();
+          })
         });
       });
       break;
 
     case "2":
-      const total = cart.calculateTotal();
-      console.log(`Total price ${total}`);
+      console.log(cart.productList);
+      if(!cart.productList){
+        console.log('Cart is empty!')
+      }else{
+        const total = cart.calculateTotal();
+        console.log(`Total price ${total}`);
+      }
       callUserChoice();
       break;
 
-    case "3":
+    case '3':
+      if (!cart.productList) {
+        console.log('Cart is empty');
+        callUserChoice();
+      } else {
+
+        rl.question("Enter product name to remove:", (name) => {
+          cart.removeProduct(name);
+          console.log(`product ${name} is removed`);
+          callUserChoice();
+        });
+      }
+      break;
+    case '4':
+      console.log(cart.productList);
+      if(!cart.productList){
+        console.log('Cart is empty');
+      }else{
+        cart.displayCartItems();
+      }
+      callUserChoice();
+      break;
+
+    case "5":
       console.log(`exiting`);
       rl.close();
       break;
@@ -46,15 +81,3 @@ function callUserChoice() {
 }
 
 callUserChoice();
-
-// const product1 = new Product('Water bottle',20);
-// const product2 = new Product('watch',2000);
-// const product3 = new Product('rice',60);
-// cart.addProduct(product1);
-// cart.addProduct(product2);
-// cart.addProduct(product3);
-
-// console.log('Total price:', cart.calculateTotal());
-
-// cart.removeProduct('rice');
-// console.log(cart.products)

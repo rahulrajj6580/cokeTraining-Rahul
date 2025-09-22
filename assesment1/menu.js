@@ -1,8 +1,11 @@
 function menu(){
-    console.log(`\nEnter a number 1 or 2 or 3:
+    console.log(`\nEnter a number from below:
         1.Add Product
         2.Show total price
-        3.Exit`);
+        3.Remove product
+        4.Display Cart items
+        5.Exit
+        `);
 }
 
 export default menu;
